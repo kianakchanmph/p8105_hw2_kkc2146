@@ -1,0 +1,26 @@
+---
+title: "Homework 2"
+output: github_document
+---
+
+```{r setup}
+library(readxl)
+```
+## load the trash data 
+
+```{r}
+trash_data = read_excel("Trash-Wheel-Collection-Totals-8-6-19.xlsx")
+  janitor::clean_names(trash_data) 
+  names(trash_data)
+  drop_na(trash_data)
+  drop_na(trash_data, Dumpster)
+```
+## Round Number of Sports Balls to Nearest Integer 
+```{r setup}
+library(dplyr)
+```
+```{r}
+  trash_data %>% 
+  mutate_if(sports_balls(is.numeric), round)
+```
+
