@@ -5,6 +5,12 @@ output: github_document
 
 ## Problem 1
 
+###Read and clean the Mr. Trash Wheel sheet:
+###specify the sheet in the Excel file and to omit non-data entries (rows with notes / figures; columns containing notes) using arguments in read_excel 
+###use reasonable variable names
+###omit rows that do not include dumpster-specific data
+###round the number of sports balls to the nearest integer
+
 ```{r setup}
 library(tidyverse)
 library(readxl)
@@ -120,66 +126,16 @@ The snp_data includes data on the Standard & Poor's stock market index (S&P), wh
 The unemployment_data dataset contains 68 observations and 13 variables. Some of the key variables include 'year' (the year measurements) and the month, from January to December (percentage of employment per month)
  
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- )
-  janitor::clean_names(pols_data) 
-  separate(mon, into = c("year", "month", "day"), sep = 3)
-  mutate(
-    president = prez_dem + prez_gop
-  )
-  select(pols_data, -prez_dem, -prez_gop, -day)
-## ASK TA HOW TO CREATE NEW VARIABLE CALLED PRESIDENT FROM GOP AND DEM, AND TO REMOVE DAY VAR
-```{r}
-pols_data = read_csv("./fivethirtyeight_datasets/pols-month.csv") 
-  janitor::clean_names(pols_data) 
-  mutate(
-    president = prez_dem + prez_gop
-  )
-  select(pols_data, -prez_dem, -prez_gop)
-```
-
-```{r setup}
-library(readcsv)
-```
-```{r}
-pols_data = read_csv("./fivethirtyeight_datasets/pols-month.csv") 
-  janitor::clean_names(pols_data) 
+## PROBLEM 3 
 
 
-
-```{r}
-trash_data = 
-  left_join(precipitation_data2018, precipitation_data2019, by = "Month")
-```
-
-
-```{r}
-rename(precipitation_data, GROUP = group, )
-```
-
-
-
-
-
-```{r}
-trash_data %>%
-  mutate_if(trash_data, sports_balls(is.numeric), round)
-```
-
-```{r}
-trash_data =  
-  read_excel("Trash-Wheel-Collection-Totals-8-6-19.xlsx") %>%
-  mutate_if(trash_data, sports_balls(is.numeric), round)
-```
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
