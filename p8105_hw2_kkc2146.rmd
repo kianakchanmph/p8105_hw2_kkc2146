@@ -11,7 +11,7 @@ output: github_document
 ###omit rows that do not include dumpster-specific data
 ###round the number of sports balls to the nearest integer
 
-```{r setup}
+```{r}
 library(tidyverse)
 library(readxl)
 library(dplyr)
@@ -65,9 +65,6 @@ precipitation_data2018_2019 =
 
 ## PROBLEM 2: This problem uses the FiveThirtyEight data; these data were gathered to create the interactive graphic on this page. In particular, we’ll use the data in pols-month.csv, unemployment.csv, and snp.csv. Our goal is to merge these into a single data frame using year and month as keys across datasets.
 
-```{r setup}
-library(readcsv)
-```
 
 ## First, clean the data in pols-month.csv. Use separate() to break up the variable mon into integer variables year, month, and day; replace month number with month name; create a president variable taking values gop and dem, and remove prez_dem and prez_gop; and remove the day variable.
 
@@ -128,8 +125,55 @@ The unemployment_data dataset contains 68 observations and 13 variables. Some of
  
 ## PROBLEM 3 
 
+### This problem uses data from NYC Open data on the popularity of baby names, and can be downloaded here.
 
- 
+Load and tidy the data. Note that, although these data may seem fairly well formatted initially, the names of a categorical predictor and the case structure of string variables changed over time; you’ll need to address this in your data cleaning. Also, some rows seem duplicated, and these will need to be removed (hint: google something like “dplyr remove duplicate rows” to get started).
+
+Produce a well-structured, reader-friendly table showing the rank in popularity of the name “Olivia” as a female baby name over time; this should have rows for ethnicities and columns for year. Produce a similar table showing the most popular name among male children over time.
+
+```{r}
+babynames_data = read_csv("Popular_Baby_Names.csv") %>%
+ janitor::clean_names() %>% 
+mutate(
+    gender = str_to_lower(gender), 
+    ethnicity = str_to_lower(ethnicity), 
+    ethnicity = as.character(ethnicity),
+    childs_first_name = str_to_lower(childs_first_name)) %>% 
+    distinct(.keep_all = TRUE) %>% 
+filter(childs_first_name == "olivia") %>% 
+  select(-gender,-childs_first_name) %>% 
+  pivot_wider(
+    names_from = year_of_birth,
+    values_from = count
+  ) 
+```
+### Produce a similar table showing the most popular name among male children over time.
+```{r}
+babynames_data = read_csv("Popular_Baby_Names.csv") %>%
+ janitor::clean_names() %>% 
+mutate(
+    gender = str_to_lower(gender), 
+    ethnicity = str_to_lower(ethnicity), 
+    ethnicity = as.character(ethnicity),
+    childs_first_name = str_to_lower(childs_first_name)) %>% 
+    distinct(.keep_all = TRUE) %>% 
+filter(gender == "male") %>% 
+  select(-gender) %>% 
+  pivot_wider(
+    names_from = year_of_birth,
+    values_from = count
+  ) %>% 
+ sort(rank, decreasing = TRUE)
+```
+
+
+#Finally, for male, white non-hispanic children born in 2016, produce a scatter plot showing the number of children with a name (y axis) against the rank in popularity of that name (x axis).
+
+```{r}
+babynames_data %>% 
+  ggplot(aes(x = 'count', y = 'rank')) + geom_point()
+```
+
  
  
  
